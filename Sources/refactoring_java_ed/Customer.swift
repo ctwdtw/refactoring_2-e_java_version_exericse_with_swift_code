@@ -25,7 +25,7 @@ public class Customer {
         // determine amounts for each rental
         rentals.forEach { each in
             // add frequent renter points
-            frequentRentalPoints += self.frequentRenterPoints(each)
+            frequentRentalPoints += each.getFrequentRenterPoints()
             // show figures for this rental
             result += "  \(each.movie.title)  \(each.getCharge())\n"
             totalAmount += each.getCharge()
@@ -35,9 +35,5 @@ public class Customer {
         result += "Amount owed is \(totalAmount)\n"
         result += "You earned \(frequentRentalPoints) frequent renter points"
         return result
-    }
-    
-    private func frequentRenterPoints(_ aRental: Rental) -> Int {
-        aRental.getFrequentRenterPoints()
     }
 }
