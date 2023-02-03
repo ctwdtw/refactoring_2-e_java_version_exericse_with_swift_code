@@ -35,4 +35,13 @@ public class Rental {
         return thisAmount
 
     }
+    
+    func getFrequentRenterPoints() -> Int {
+        var result = 1
+        // add bonus for a two day new release rental
+        if movie.priceCode == .newRelease && daysRented > 1 {
+            result += 1
+        }
+        return result
+    }
 }
