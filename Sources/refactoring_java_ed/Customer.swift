@@ -24,7 +24,7 @@ public class Customer {
         var result: String = "Rental Record for \(name)\n"
         // determine amounts for each rental
         rentals.forEach { each in
-            let thisAmount = amountFor(each)
+            let thisAmount = each.getCharge()
             
             // add frequent renter points
             frequentRentalPoints += 1
@@ -42,9 +42,4 @@ public class Customer {
         result += "You earned \(frequentRentalPoints) frequent renter points"
         return result
     }
-    
-    private func amountFor(_ aRental: Rental) -> Double {
-        return aRental.getCharge()
-    }
-    
 }
