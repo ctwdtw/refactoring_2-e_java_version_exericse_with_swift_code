@@ -43,20 +43,20 @@ public class Customer {
         return result
     }
     
-    private func amountFor(_ each: Rental) -> Double {
+    private func amountFor(_ aRental: Rental) -> Double {
         var thisAmount: Double = 0
-        switch each.movie.priceCode {
+        switch aRental.movie.priceCode {
         case .regular:
             thisAmount += 2
-            if each.daysRented > 2 {
-                thisAmount += Double(each.daysRented - 2)*1.5
+            if aRental.daysRented > 2 {
+                thisAmount += Double(aRental.daysRented - 2)*1.5
             }
         case .newRelease:
-            thisAmount += Double(each.daysRented * 3)
+            thisAmount += Double(aRental.daysRented * 3)
         case .childrens:
             thisAmount += 1.5
-            if each.daysRented > 3 {
-                thisAmount += Double(each.daysRented - 3)*1.5
+            if aRental.daysRented > 3 {
+                thisAmount += Double(aRental.daysRented - 3)*1.5
             }
         }
         
