@@ -44,22 +44,7 @@ public class Customer {
     }
     
     private func amountFor(_ aRental: Rental) -> Double {
-        var thisAmount: Double = 0
-        switch aRental.movie.priceCode {
-        case .regular:
-            thisAmount += 2
-            if aRental.daysRented > 2 {
-                thisAmount += Double(aRental.daysRented - 2)*1.5
-            }
-        case .newRelease:
-            thisAmount += Double(aRental.daysRented * 3)
-        case .childrens:
-            thisAmount += 1.5
-            if aRental.daysRented > 3 {
-                thisAmount += Double(aRental.daysRented - 3)*1.5
-            }
-        }
-        
-        return thisAmount
+        return aRental.getCharge()
     }
+    
 }
