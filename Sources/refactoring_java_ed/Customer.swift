@@ -25,11 +25,7 @@ public class Customer {
         // determine amounts for each rental
         rentals.forEach { each in
             // add frequent renter points
-            frequentRentalPoints += 1
-            // add bonus for a two day new release rental
-            if each.movie.priceCode == .newRelease && each.daysRented > 1 {
-                frequentRentalPoints += 1
-            }
+            frequentRentalPoints += self.frequentRentalPoints(each)
             // show figures for this rental
             result += "  \(each.movie.title)  \(each.getCharge())\n"
             totalAmount += each.getCharge()
@@ -38,6 +34,15 @@ public class Customer {
         // add footer lines
         result += "Amount owed is \(totalAmount)\n"
         result += "You earned \(frequentRentalPoints) frequent renter points"
+        return result
+    }
+    
+    private func frequentRentalPoints(_ each: Rental) -> Int {
+        var result = 1
+        // add bonus for a two day new release rental
+        if each.movie.priceCode == .newRelease && each.daysRented > 1 {
+            result += 1
+        }
         return result
     }
 }
