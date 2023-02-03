@@ -24,22 +24,7 @@ public class Customer {
         var result: String = "Rental Record for \(name)\n"
         // determine amounts for each rental
         rentals.forEach { each in
-            var thisAmount: Double = 0
-            
-            switch each.movie.priceCode {
-            case .regular:
-                thisAmount += 2
-                if each.daysRented > 2 {
-                    thisAmount += Double(each.daysRented - 2)*1.5
-                }
-            case .newRelease:
-                thisAmount += Double(each.daysRented * 3)
-            case .childrens:
-                thisAmount += 1.5
-                if each.daysRented > 3 {
-                    thisAmount += Double(each.daysRented - 3)*1.5
-                }
-            }
+            let thisAmount = amountFor(each)
             
             // add frequent renter points
             frequentRentalPoints += 1
@@ -56,5 +41,25 @@ public class Customer {
         result += "Amount owed is \(totalAmount)\n"
         result += "You earned \(frequentRentalPoints) frequent renter points"
         return result
+    }
+    
+    private func amountFor(_ each: Rental) -> Double {
+        var thisAmount: Double = 0
+        switch each.movie.priceCode {
+        case .regular:
+            thisAmount += 2
+            if each.daysRented > 2 {
+                thisAmount += Double(each.daysRented - 2)*1.5
+            }
+        case .newRelease:
+            thisAmount += Double(each.daysRented * 3)
+        case .childrens:
+            thisAmount += 1.5
+            if each.daysRented > 3 {
+                thisAmount += Double(each.daysRented - 3)*1.5
+            }
+        }
+        
+        return thisAmount
     }
 }
