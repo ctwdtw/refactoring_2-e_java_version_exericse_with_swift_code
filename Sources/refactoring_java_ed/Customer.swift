@@ -24,8 +24,6 @@ public class Customer {
         var result: String = "Rental Record for \(name)\n"
         // determine amounts for each rental
         rentals.forEach { each in
-            let thisAmount = each.getCharge()
-            
             // add frequent renter points
             frequentRentalPoints += 1
             // add bonus for a two day new release rental
@@ -33,8 +31,8 @@ public class Customer {
                 frequentRentalPoints += 1
             }
             // show figures for this rental
-            result += "  \(each.movie.title)  \(thisAmount)\n"
-            totalAmount += thisAmount
+            result += "  \(each.movie.title)  \(each.getCharge())\n"
+            totalAmount += each.getCharge()
         }
         
         // add footer lines
