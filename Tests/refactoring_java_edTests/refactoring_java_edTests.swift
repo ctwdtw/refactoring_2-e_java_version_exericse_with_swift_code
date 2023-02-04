@@ -21,6 +21,22 @@ You earned 6 frequent renter points
         XCTAssertEqual(result, expected)
     }
     
+    func testHtmlStatement() {
+        let bigCo = makeCustomer(name: "BigCo")
+        let expected = """
+<H1>Rentals for <EM>BigCo</EM></H1><P>
+  Movie1: 2.0<BR>
+  Movie2: 5.0<BR>
+  Movie3: 6.0<BR>
+  Movie4: 1.5<BR>
+  Movie5: 3.0<BR>
+<P>You owe <EM>17.5</EM><P>
+On this rental you earned <EM>6</EM> frequent renter points<P>
+"""
+        let result = bigCo.htmlStatement()
+        XCTAssertEqual(result, expected)
+    }
+    
     private func makeCustomer(name: String) -> Customer {
         let customer = Customer(name: name)
         customer.addRental(Rental(movie: Movie(title: "Movie1", priceCode: .regular), daysRented: 1))
