@@ -37,6 +37,20 @@ On this rental you earned <EM>6</EM> frequent renter points<P>
         XCTAssertEqual(result, expected)
     }
     
+    func testStatementSamllCo() {
+        let smallCo = Customer(name: "smallCo")
+        smallCo.addRental(Rental(movie: Movie(title: "Movie6", priceCode: .newRelease), daysRented: 1))
+        let expected = """
+Rental Record for smallCo
+  Movie6  3.0
+Amount owed is 3.0
+You earned 1 frequent renter points
+"""
+        let result = smallCo.statement()
+        XCTAssertEqual(result, expected)
+        
+    }
+    
     private func makeCustomer(name: String) -> Customer {
         let customer = Customer(name: name)
         customer.addRental(Rental(movie: Movie(title: "Movie1", priceCode: .regular), daysRented: 1))
