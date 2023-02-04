@@ -25,16 +25,24 @@ public class Movie {
     
     private(set) var title: String
     
-    public var priceCode: PriceCode
+    private var priceCode: PriceCode!
     
     public init(title: String, priceCode: PriceCode) {
         self.title = title
+        self.setPriceCode(priceCode)
+    }
+    
+    public func setPriceCode(_ priceCode: PriceCode) {
         self.priceCode = priceCode
+    }
+    
+    public func getPriceCode() -> PriceCode {
+        return priceCode
     }
     
     func getCharge(from daysRented: Int) -> Double {
         var thisAmount: Double = 0
-        switch priceCode {
+        switch getPriceCode() {
         case .regular:
             thisAmount += 2
             if daysRented > 2 {
@@ -55,7 +63,7 @@ public class Movie {
     func getFrequentRenterPoints(from daysRented: Int) -> Int {
         var result = 1
         // add bonus for a two day new release rental
-        if priceCode == .newRelease && daysRented > 1 {
+        if getPriceCode() == .newRelease && daysRented > 1 {
             result += 1
         }
         return result
