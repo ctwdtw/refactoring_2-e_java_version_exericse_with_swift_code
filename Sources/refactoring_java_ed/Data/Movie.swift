@@ -52,10 +52,6 @@ public class Movie {
         }
     }
     
-    public func getPriceCode() -> PriceCode {
-        return price.getPriceCode()
-    }
-    
     func getCharge(from daysRented: Int) -> Double {
         price.getCharge(from: daysRented)
     }

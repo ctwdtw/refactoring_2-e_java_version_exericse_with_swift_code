@@ -7,10 +7,6 @@
 
 import Foundation
 class Price {
-    func getPriceCode() -> Movie.PriceCode {
-        fatalError("subclass responsibility")
-    }
-    
     func getCharge(from daysRented: Int) -> Double {
         fatalError("subclass responsibility")
     }
@@ -21,10 +17,6 @@ class Price {
 }
 
 class ChildrensPrice: Price {
-    override func getPriceCode() -> Movie.PriceCode {
-        .childrens
-    }
-    
     override func getCharge(from daysRented: Int) -> Double {
         var thisAmount: Double = 0
         thisAmount += 1.5
@@ -36,10 +28,6 @@ class ChildrensPrice: Price {
 }
 
 class NewReleasePrice: Price {
-    override func getPriceCode() -> Movie.PriceCode {
-        .newRelease
-    }
-    
     override func getCharge(from daysRented: Int) -> Double {
         return Double(daysRented * 3)
     }
@@ -54,10 +42,6 @@ class NewReleasePrice: Price {
 }
 
 class RegularPrice: Price {
-    override func getPriceCode() -> Movie.PriceCode {
-        .regular
-    }
-    
     override func getCharge(from daysRented: Int) -> Double {
         var thisAmount: Double = 0
         thisAmount += 2
