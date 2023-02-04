@@ -25,19 +25,35 @@ public class Movie {
     
     private(set) var title: String
     
-    private var priceCode: PriceCode!
+    private var price: Price!
     
     public init(title: String, priceCode: PriceCode) {
         self.title = title
         self.setPriceCode(priceCode)
     }
     
+    /// 使用 `Self Encapsulate Field (171)`, 去建立 `setPriceCode()` 和 `getPricecode` 的好處是，
+    /// 當我們替換 `Movie.priceCode` 為 `Movie.price` 的時候，不必修改 `Movie.init(title:priceCode:)` signature
+    /// 不會讓使用到建構子的 client code 需要改動，雖然在我們目前的案例中，只有 test case 是唯一的 client, 但我覺得實際的場景中
+    /// 有可能會發生到更多的 client code 使用舊的建構子，更能體現到建立 `setPriceCode()` 的好處。
+    ///
+    /// 因為原本 `Movie.priceCode` 也是 private 的, 上個 commit 使用 `Self Encapsulate Field (171)` 去建立 `getPricecode` 的時候，
+    /// 改動的 code 也被限制在 `Movie` 這個 class 中。只要我們在上個 commit 有去檢查 `Movie` class 中對 `Movie.priceCode` 的調用, 改成 `getPricecode`
+    /// 在這個 commit 中，我們就只要修改 `setPriceCode()` 和 `getPricecode` 的實作，code base 的其他部分，並不會發現我們已經將原本的 `priceCode` 替換成
+    /// `Price` class 的子類，測試和其他的 client 都不會 broken 然後我們就可以在下個 commit, 搬移我們的 typed code, 準備運用 `Replace Conditional With Polymorphism (255)` 去掉骯髒的 switch.
     public func setPriceCode(_ priceCode: PriceCode) {
-        self.priceCode = priceCode
+        switch priceCode {
+        case .regular:
+            price = RegularPrice()
+        case .newRelease:
+            price = NewReleasePrice()
+        case .childrens:
+            price = ChildrensPrice()
+        }
     }
     
     public func getPriceCode() -> PriceCode {
-        return priceCode
+        return price.getPriceCode()
     }
     
     func getCharge(from daysRented: Int) -> Double {
