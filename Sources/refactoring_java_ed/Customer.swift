@@ -9,16 +9,7 @@ import Foundation
 
 class Statement{
     func statement(for customer: Customer) -> String {
-        var result = header(for: customer)
-        // determine amounts for each rental
-        customer.rentals.forEach { each in
-            // show figures for this rental
-            result += detail(for: each)
-        }
-        
-        // add footer lines
-        result += footer(for: customer)
-        return result
+        header(for: customer) + customer.rentals.map(detail(for:)).joined() + footer(for: customer)
     }
     
     func header(for customer: Customer) -> String {
