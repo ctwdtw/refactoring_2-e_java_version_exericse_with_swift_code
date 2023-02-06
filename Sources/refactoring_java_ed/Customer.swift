@@ -6,9 +6,44 @@
 //
 
 import Foundation
+
+class Statement{}
+
+class TextStatement: Statement {
+    func statement(for customer: Customer) -> String {
+        var result: String = "Rental Record for \(customer.name)\n"
+        // determine amounts for each rental
+        customer.rentals.forEach { each in
+            // show figures for this rental
+            result += "  \(each.movie.title)  \(each.getCharge())\n"
+        }
+        
+        // add footer lines
+        result += "Amount owed is \(customer.getTotalCharge())\n"
+        result += "You earned \(customer.getTotalFrequentRenterPoints()) frequent renter points"
+        return result
+    }
+}
+
+class HtmlStatement: Statement {
+    func statement(for customer: Customer) -> String {
+        var result: String = "<H1>Rentals for <EM>\(customer.name)</EM></H1><P>\n"
+        // determine amounts for each rental
+        customer.rentals.forEach { each in
+            // show figures for this rental
+            result += "  \(each.movie.title): \(each.getCharge())<BR>\n"
+        }
+        
+        // add footer lines
+        result += "<P>You owe <EM>\(customer.getTotalCharge())</EM><P>\n"
+        result += "On this rental you earned <EM>\(customer.getTotalFrequentRenterPoints())</EM> frequent renter points<P>"
+        return result
+    }
+}
+
 public class Customer {
     private(set) var name: String
-    private var rentals: [Rental] = []
+    private(set) var rentals: [Rental] = []
     
     public init(name: String) {
         self.name = name
@@ -19,34 +54,14 @@ public class Customer {
     }
     
     public func statement() -> String {
-        var result: String = "Rental Record for \(name)\n"
-        // determine amounts for each rental
-        rentals.forEach { each in
-            // show figures for this rental
-            result += "  \(each.movie.title)  \(each.getCharge())\n"
-        }
-        
-        // add footer lines
-        result += "Amount owed is \(getTotalCharge())\n"
-        result += "You earned \(getTotalFrequentRenterPoints()) frequent renter points"
-        return result
+        return TextStatement().statement(for: self)
     }
     
     public func htmlStatement() -> String {
-        var result: String = "<H1>Rentals for <EM>\(name)</EM></H1><P>\n"
-        // determine amounts for each rental
-        rentals.forEach { each in
-            // show figures for this rental
-            result += "  \(each.movie.title): \(each.getCharge())<BR>\n"
-        }
-        
-        // add footer lines
-        result += "<P>You owe <EM>\(getTotalCharge())</EM><P>\n"
-        result += "On this rental you earned <EM>\(getTotalFrequentRenterPoints())</EM> frequent renter points<P>"
-        return result
+        return HtmlStatement().statement(for: self)
     }
     
-    private func getTotalCharge() -> Double {
+    func getTotalCharge() -> Double {
         var totalAmount: Double  = 0
         rentals.forEach { each in
             totalAmount += each.getCharge()
@@ -54,7 +69,7 @@ public class Customer {
         return totalAmount
     }
     
-    private func getTotalFrequentRenterPoints() -> Int {
+    func getTotalFrequentRenterPoints() -> Int {
         var frequentRenterPoints: Int = 0
         rentals.forEach { each in
             frequentRenterPoints += each.getFrequentRenterPoints()
