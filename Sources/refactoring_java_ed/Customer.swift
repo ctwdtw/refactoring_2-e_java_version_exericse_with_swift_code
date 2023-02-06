@@ -9,11 +9,15 @@ import Foundation
 
 class Statement{
     func statement(for customer: Customer) -> String {
-        header(for: customer) + customer.rentals.map(body(for:)).joined() + footer(for: customer)
+        header(for: customer) + body(for: customer) + footer(for: customer)
     }
     
     func header(for customer: Customer) -> String {
         fatalError("subclass-responsibility")
+    }
+    
+    private func body(for customer: Customer) -> String {
+        return customer.rentals.map(body(for:)).joined()
     }
     
     func body(for rental: Rental) -> String {
