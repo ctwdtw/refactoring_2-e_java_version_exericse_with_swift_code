@@ -7,9 +7,7 @@
 
 import Foundation
 
-class Statement{}
-
-class TextStatement: Statement {
+class Statement{
     func statement(for customer: Customer) -> String {
         var result = header(for: customer)
         // determine amounts for each rental
@@ -23,15 +21,31 @@ class TextStatement: Statement {
         return result
     }
     
-    private func header(for customer: Customer) -> String {
+    func header(for customer: Customer) -> String {
+        fatalError("subclass-responsibility")
+    }
+    
+    func detail(for rental: Rental) -> String {
+        fatalError("subclass-responsibility")
+    }
+    
+    func footer(for customer: Customer) -> String {
+        fatalError("subclass-responsibility")
+    }
+
+    
+}
+
+class TextStatement: Statement {
+     override func header(for customer: Customer) -> String {
         return "Rental Record for \(customer.name)\n"
     }
     
-    private func detail(for rental: Rental) -> String {
+     override func detail(for rental: Rental) -> String {
         return "  \(rental.movie.title)  \(rental.getCharge())\n"
     }
     
-    private func footer(for customer: Customer) -> String {
+     override func footer(for customer: Customer) -> String {
         var result = ""
         result += "Amount owed is \(customer.getTotalCharge())\n"
         result += "You earned \(customer.getTotalFrequentRenterPoints()) frequent renter points"
@@ -40,28 +54,15 @@ class TextStatement: Statement {
 }
 
 class HtmlStatement: Statement {
-    func statement(for customer: Customer) -> String {
-        var result = header(for: customer)
-        // determine amounts for each rental
-        customer.rentals.forEach { each in
-            // show figures for this rental
-            result += detail(for: each)
-        }
-        
-        // add footer lines
-        result += footer(for: customer)
-        return result
-    }
-    
-    private func header(for customer: Customer) -> String {
+     override func header(for customer: Customer) -> String {
         return "<H1>Rentals for <EM>\(customer.name)</EM></H1><P>\n"
     }
     
-    private func detail(for rental: Rental) -> String {
+     override func detail(for rental: Rental) -> String {
         return "  \(rental.movie.title): \(rental.getCharge())<BR>\n"
     }
     
-    private func footer(for customer: Customer) -> String {
+     override func footer(for customer: Customer) -> String {
         var result = ""
         result += "<P>You owe <EM>\(customer.getTotalCharge())</EM><P>\n"
         result += "On this rental you earned <EM>\(customer.getTotalFrequentRenterPoints())</EM> frequent renter points<P>"
