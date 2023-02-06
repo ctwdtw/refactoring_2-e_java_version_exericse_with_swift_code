@@ -9,14 +9,14 @@ import Foundation
 
 class Statement{
     func statement(for customer: Customer) -> String {
-        header(for: customer) + customer.rentals.map(detail(for:)).joined() + footer(for: customer)
+        header(for: customer) + customer.rentals.map(body(for:)).joined() + footer(for: customer)
     }
     
     func header(for customer: Customer) -> String {
         fatalError("subclass-responsibility")
     }
     
-    func detail(for rental: Rental) -> String {
+    func body(for rental: Rental) -> String {
         fatalError("subclass-responsibility")
     }
     
@@ -32,7 +32,7 @@ class TextStatement: Statement {
         return "Rental Record for \(customer.name)\n"
     }
     
-     override func detail(for rental: Rental) -> String {
+     override func body(for rental: Rental) -> String {
         return "  \(rental.movie.title)  \(rental.getCharge())\n"
     }
     
@@ -49,7 +49,7 @@ class HtmlStatement: Statement {
         return "<H1>Rentals for <EM>\(customer.name)</EM></H1><P>\n"
     }
     
-     override func detail(for rental: Rental) -> String {
+     override func body(for rental: Rental) -> String {
         return "  \(rental.movie.title): \(rental.getCharge())<BR>\n"
     }
     
