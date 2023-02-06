@@ -11,14 +11,28 @@ class Statement{}
 
 class TextStatement: Statement {
     func statement(for customer: Customer) -> String {
-        var result: String = "Rental Record for \(customer.name)\n"
+        var result = header(for: customer)
         // determine amounts for each rental
         customer.rentals.forEach { each in
             // show figures for this rental
-            result += "  \(each.movie.title)  \(each.getCharge())\n"
+            result += detail(for: each)
         }
         
         // add footer lines
+        result += footer(for: customer)
+        return result
+    }
+    
+    private func header(for customer: Customer) -> String {
+        return "Rental Record for \(customer.name)\n"
+    }
+    
+    private func detail(for rental: Rental) -> String {
+        return "  \(rental.movie.title)  \(rental.getCharge())\n"
+    }
+    
+    private func footer(for customer: Customer) -> String {
+        var result = ""
         result += "Amount owed is \(customer.getTotalCharge())\n"
         result += "You earned \(customer.getTotalFrequentRenterPoints()) frequent renter points"
         return result
@@ -27,14 +41,28 @@ class TextStatement: Statement {
 
 class HtmlStatement: Statement {
     func statement(for customer: Customer) -> String {
-        var result: String = "<H1>Rentals for <EM>\(customer.name)</EM></H1><P>\n"
+        var result = header(for: customer)
         // determine amounts for each rental
         customer.rentals.forEach { each in
             // show figures for this rental
-            result += "  \(each.movie.title): \(each.getCharge())<BR>\n"
+            result += detail(for: each)
         }
         
         // add footer lines
+        result += footer(for: customer)
+        return result
+    }
+    
+    private func header(for customer: Customer) -> String {
+        return "<H1>Rentals for <EM>\(customer.name)</EM></H1><P>\n"
+    }
+    
+    private func detail(for rental: Rental) -> String {
+        return "  \(rental.movie.title): \(rental.getCharge())<BR>\n"
+    }
+    
+    private func footer(for customer: Customer) -> String {
+        var result = ""
         result += "<P>You owe <EM>\(customer.getTotalCharge())</EM><P>\n"
         result += "On this rental you earned <EM>\(customer.getTotalFrequentRenterPoints())</EM> frequent renter points<P>"
         return result
